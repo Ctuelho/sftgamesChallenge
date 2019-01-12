@@ -9,5 +9,9 @@ function Distance2D (coords){
     return distance;
 }
 
+function LerpFloat(start, end, percent){
+     return (start + percent*(end - start));
+}
 
-export { Distance2D };
+
+export { Distance2D, LerpFloat };

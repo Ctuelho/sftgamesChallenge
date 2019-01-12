@@ -5,12 +5,13 @@ class CardsChallenge {
         this.numberOfCards = 144;
         this.cards = [];
         this.stackStartX = 200;
-        this.stackStartY = refApp.renderer.height - 300;
+        this.stackStartY = refApp.renderer.height - 200;
         this.stackEndX = 500;
-        this.stackEndY = refApp.renderer.height - 300;
+        this.stackEndY = refApp.renderer.height - 200;
         this.stackPaddingX = 0;
         this.stackPaddingY = 0.5;
         this.intervalToMoveCards = 60;
+        this.cardMovementDuration = 120;
         this.currentTime = 0;
         this.currentCardIndex = 0;
         this.complete = false;
@@ -45,9 +46,11 @@ class CardsChallenge {
             this.cards.push(cardSprite);
         }
         
-        this.cards.forEach(card => {
+        this.cards.forEach( card => {
             this.refApp.stage.addChild(card)
         });
+
+        //console.log("create cards", this.cards.length);
     }
 
     update(delta){
@@ -55,7 +58,7 @@ class CardsChallenge {
         // console.log(this.currentTime);
         if(!this.complete && this.currentTime >= this.intervalToMoveCards){
             this.currentTime -= this.intervalToMoveCards;
-            console.log("move another card");
+            //console.log("move another card");
 
             this.currentCardIndex++;
 
@@ -66,11 +69,14 @@ class CardsChallenge {
                 this.cards[currentCardThatWillMove].y, //currentY
                 this.cards[currentCardThatWillMove].toX = this.stackEndX + this.currentCardIndex * this.stackPaddingX, //endX
                 this.cards[currentCardThatWillMove].toY = this.stackEndY - this.currentCardIndex * this.stackPaddingY, //endY
-                this.cards[currentCardThatWillMove].duration = 120,
+                this.cards[currentCardThatWillMove].duration = this.cardMovementDuration,
             );
             if(this.currentCardIndex >= this.numberOfCards){
                 this.complete = true;
             }
+
+            this.refApp.sortZorder();
+
         }
         this.cards.forEach(card => {
             //translate each card if it is moving
@@ -85,16 +91,13 @@ class CardsChallenge {
                     var tX = card.x + card.amountX;
                     var tY = card.y + card.amountY;
                     card.position.set(tX, tY);
-                    if(card.currentFrame >= this.intervalToMoveCards){
-                        card.zIndex = this.numberOfCards - this.currentCardIndex;
-                    }
-                    
+                    card.zIndex = this.numberOfCards - this.currentCardIndex;                    
                 }
             }
         });
     }
 
-    clear(){
+    unmount(){
     }
 }
 

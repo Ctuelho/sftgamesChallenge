@@ -1,22 +1,21 @@
-import { Distance2D } from './modules/mathUtil';
-
-import { MainMenu } from './modules/mainMenu';
+import { CustomButton } from './modules/customButton';
 import { CardsChallenge } from './modules/cardsChallenge';
+import { ParticlesChallenge } from './modules/particlesChallenge';
 
 
 import * as PIXI from 'pixi.js';
 
 //images
 import magicCard from './images/magicCard.png';
-
-let type = "WebGL"
-if(!PIXI.utils.isWebGLSupported()){
-    type = "canvas"
-}
-PIXI.utils.sayHello(type);
+import fireParticle from './images/fireParticle.png';
+import textureButton from './images/textureButton.png';
+import textureButtonDown from './images/textureButtonDown.png';
+import textureButtonOver from './images/textureButtonOver.png';
 
 //Create a Pixi Application
 const app = new PIXI.Application();
+
+let currentChallenge = null;
 
 app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
@@ -28,26 +27,42 @@ document.body.appendChild(app.view);
 //load all images now
 //question: make an atlas?
 PIXI.loader
+    .add(textureButton)
+    .add(textureButtonDown)
+    .add(textureButtonOver)
+    .add(fireParticle)
     .add(magicCard)
     .load(setup);
 
 function setup(){
+    app.ticker.add(delta => gameLoop(delta));
+    showMainMenu();
+}
+
+function setCardsChallenge(){
     let cardsChallenge = new CardsChallenge(
         app, magicCard
     );
-    cardsChallenge.mount();
-
-    app.ticker.add(delta => gameLoop(delta));
-
-    currentChallenge = cardsChallenge;
+    setChallenge(cardsChallenge);
 }
 
-let currentChallenge = null;
+function setparticlesChallenge(){
+    let particlesChallenge = new CardsChallenge(
+        app, fireParticle
+    );
+    setChallenge(particlesChallenge);
+}
+
+function showMainMenu(){
+    setChallenge(null);
+    let cardsButton = new CustomButton(app, setCardsChallenge, textureButton, textureButtonDown, textureButtonOver);
+    cardsButton.mount();
+}
 
 function setChallenge(newChallange){
     
     if(currentChallenge != null){
-        currentChallenge.clear();
+        currentChallenge.unmount();
     }
     if(newChallange != null){
         newChallange.mount();
@@ -55,14 +70,19 @@ function setChallenge(newChallange){
     currentChallenge = newChallange;
 }
 
+app.sortZorder = () => {
+    app.stage.children.sort(function(a,b) { //ver se precisa sortear toda hora
+        a.zIndex = a.zIndex || 0;
+        b.zIndex = b.zIndex || 0;
+        return b.zIndex - a.zIndex
+    });
+}
+
 function gameLoop(delta){
     if(currentChallenge != null){
         currentChallenge.update(delta);
-        app.stage.children.sort(function(a,b) {
-            a.zIndex = a.zIndex || 0;
-            b.zIndex = b.zIndex || 0;
-            return b.zIndex - a.zIndex
-        });
+        // app.sortZorder();
+        //console.log("FPS: ",app.ticker.FPS);
     }
 }
 
