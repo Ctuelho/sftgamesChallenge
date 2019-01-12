@@ -1,5 +1,4 @@
 const path = require('path');
-// var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: "production",
@@ -12,9 +11,6 @@ module.exports = {
         contentBase: './dist',
         port: 5555,
     },
-    // plugins: [
-    //     new CopyWebpackPlugin([{from: "./src/images", to: path.resolve(__dirname, 'dist/images')}])
-    // ],
     module: {
         rules: 
         [
