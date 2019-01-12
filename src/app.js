@@ -5,7 +5,6 @@ import { CardsChallenge } from './modules/cardsChallenge';
 
 
 import * as PIXI from 'pixi.js';
-import 'pixi-display'
 
 //images
 import magicCard from './images/magicCard.png';
@@ -34,7 +33,7 @@ PIXI.loader
 
 function setup(){
     let cardsChallenge = new CardsChallenge(
-        app, magicCard, 144
+        app, magicCard
     );
     cardsChallenge.mount();
 

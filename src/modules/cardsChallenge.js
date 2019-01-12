@@ -1,10 +1,8 @@
-import { Distance2D } from "./mathUtil";
-
 class CardsChallenge {
-    constructor(refApp, textureName, numberOfCards){
+    constructor(refApp, textureName){
         this.refApp = refApp;
         this.textureName = textureName;
-        this.numberOfCards = numberOfCards;
+        this.numberOfCards = 144;
         this.cards = [];
         this.stackStartX = 200;
         this.stackStartY = refApp.renderer.height - 300;
@@ -12,14 +10,13 @@ class CardsChallenge {
         this.stackEndY = refApp.renderer.height - 300;
         this.stackPaddingX = 0;
         this.stackPaddingY = 0.5;
+        this.intervalToMoveCards = 60;
         this.currentTime = 0;
         this.currentCardIndex = 0;
         this.complete = false;
     }
 
     mount(){
-        
-        //set variables values
         //create all cards
         //question: better way to do this?
         for (var i = 0; i < this.numberOfCards; i++){
@@ -56,8 +53,8 @@ class CardsChallenge {
     update(delta){
         this.currentTime += delta;
         // console.log(this.currentTime);
-        if(!this.complete && this.currentTime >= 60){
-            this.currentTime -= 60;
+        if(!this.complete && this.currentTime >= this.intervalToMoveCards){
+            this.currentTime -= this.intervalToMoveCards;
             console.log("move another card");
 
             this.currentCardIndex++;
@@ -88,8 +85,8 @@ class CardsChallenge {
                     var tX = card.x + card.amountX;
                     var tY = card.y + card.amountY;
                     card.position.set(tX, tY);
-                    if(card.currentFrame >= 60){
-                        card.zIndex = card.currentFrame;
+                    if(card.currentFrame >= this.intervalToMoveCards){
+                        card.zIndex = this.numberOfCards - this.currentCardIndex;
                     }
                     
                 }
