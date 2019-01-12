@@ -1,18 +1,20 @@
+import { Distance2D } from './modules/mathUtil';
+
 import { MainMenu } from './modules/mainMenu';
 import { CardsChallenge } from './modules/cardsChallenge';
 
+
 import * as PIXI from 'pixi.js';
+import 'pixi-display'
+
+//images
+import magicCard from './images/magicCard.png';
 
 let type = "WebGL"
 if(!PIXI.utils.isWebGLSupported()){
     type = "canvas"
 }
-
 PIXI.utils.sayHello(type);
-
-//path of the images used
-const CARDIMAGEPATH = require("./images/magicCard.png");
-////localStorage.setItem('magicCard', CARDIMAGEPATH);
 
 //Create a Pixi Application
 const app = new PIXI.Application();
@@ -26,19 +28,43 @@ document.body.appendChild(app.view);
 
 //load all images now
 //question: make an atlas?
-
 PIXI.loader
-        .add("https://i.ibb.co/VJ0Q9C5/magic-Card.png")
-        .load(setup);
+    .add(magicCard)
+    .load(setup);
 
 function setup(){
     let cardsChallenge = new CardsChallenge(
-        app, "https://i.ibb.co/VJ0Q9C5/magic-Card.png", 10
-   );
-   
-   cardsChallenge.mountDeck();
+        app, magicCard, 144
+    );
+    cardsChallenge.mount();
 
-   console.log("app from app", app);
+    app.ticker.add(delta => gameLoop(delta));
+
+    currentChallenge = cardsChallenge;
+}
+
+let currentChallenge = null;
+
+function setChallenge(newChallange){
+    
+    if(currentChallenge != null){
+        currentChallenge.clear();
+    }
+    if(newChallange != null){
+        newChallange.mount();
+    }
+    currentChallenge = newChallange;
+}
+
+function gameLoop(delta){
+    if(currentChallenge != null){
+        currentChallenge.update(delta);
+        app.stage.children.sort(function(a,b) {
+            a.zIndex = a.zIndex || 0;
+            b.zIndex = b.zIndex || 0;
+            return b.zIndex - a.zIndex
+        });
+    }
 }
 
 

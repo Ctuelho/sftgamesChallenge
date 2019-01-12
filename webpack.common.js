@@ -1,19 +1,21 @@
 const path = require('path');
 
 module.exports = {
-    mode: "production",
     entry: "./src/app.js",
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: "bundle.js",
     },
-    devServer: {
-        contentBase: './dist',
-        port: 5555,
-    },
     module: {
         rules: 
         [
+            {
+                test: /\.(gif|png|jpe?g|svg)$/i,
+                //loader: "file-loader?name=[name].[ext]"
+                use: [
+                    'file-loader'
+                ]
+            },
             {
                 test: /.js?$/,
                 exclude: '/node_modules/',
@@ -27,10 +29,6 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"],
-            },
-            {
-                test: /\.(gif|png|jpe?g|svg)$/i,
-                loader: "file-loader?name=[name].[ext]"
             },
         ]
     },
