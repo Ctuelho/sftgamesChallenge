@@ -5,9 +5,9 @@ class CardsChallenge {
         this.numberOfCards = 144;
         this.cards = [];
         this.stackStartX = 100;
-        this.stackStartY = refApp.renderer.height - 400;
-        this.stackEndX = 500;
-        this.stackEndY = refApp.renderer.height - 400;
+        this.stackStartY = refApp.renderer.height - 300;
+        this.stackEndX = 600;
+        this.stackEndY = refApp.renderer.height - 300;
         this.stackPaddingX = 0;
         this.stackPaddingY = 0.5;
         this.intervalToMoveCards = 60;

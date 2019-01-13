@@ -25,7 +25,8 @@ class CustomButton {
 
         button.buttonMode = true;
 
-        button.anchor.set(0.5);
+        //button.anchor.set(0.5);
+        button.pivot.set(32, 32);
 
         button.interactive = true;
         button.buttonMode = true;
