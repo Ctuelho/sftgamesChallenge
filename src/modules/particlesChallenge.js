@@ -9,16 +9,16 @@ class ParticlesChallenge {
         this.particleLifeSpam = 60;
         this.particleSpeedIsRandom = true;
         this.particleSpeed = 1;
-        this.particleMinSpeed = 0.8;
-        this.particleMaxSpeed = 1.5;
-        this.particleAcceleration = 1;
+        this.particleMinSpeed = 1.6;
+        this.particleMaxSpeed = 3.0;
+        this.particlesSize = 2;
         this.particleScaleIsRandom = true;
         this.particleMinScale = 0.9;
         this.particleMaxScale = 1.1;
         //0 - start alpha at frame 0
         //1 - at frame 10, 60% alpha
         //3 - at last frame, 0% alpha
-        this.particleAlphaStates = [0, 10, 0.9, 0];
+        this.particleAlphaStates = [0, 10, 0.7, 0];
         this.particleRotationIsRandom = true;
         this.particleStartRotation = 0;
         this.particleMinRot = -1;
@@ -75,8 +75,8 @@ class ParticlesChallenge {
                 //the particle stills alive
 
                 //change size
-                particle.scale.x = particle.orignalScaleX * (particle.lifeSpam/this.particleLifeSpam);
-                particle.scale.y = particle.orignalScaleY * (particle.lifeSpam/this.particleLifeSpam);
+                particle.scale.x = this.particlesSize * particle.orignalScaleX * (particle.lifeSpam/this.particleLifeSpam);
+                particle.scale.y = this.particlesSize * particle.orignalScaleY * (particle.lifeSpam/this.particleLifeSpam);
 
                 //change alpha
                 let targetAlpha = 0;

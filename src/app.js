@@ -61,7 +61,7 @@ function showMainMenu(){
     cardsButton.mount(100, 100, "Cards");
 
     let particlesButton = new CustomButton(app, setparticlesChallenge, textureButton, textureButtonDown, textureButtonOver);
-    particlesButton.mount(300, 100, "Particles");
+    particlesButton.mount(500, 100, "Particles");
 }
 
 function setChallenge(newChallange){
