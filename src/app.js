@@ -47,16 +47,21 @@ function setCardsChallenge(){
 }
 
 function setparticlesChallenge(){
-    let particlesChallenge = new CardsChallenge(
+    let particlesChallenge = new ParticlesChallenge(
         app, fireParticle
     );
     setChallenge(particlesChallenge);
 }
 
 function showMainMenu(){
+    
     setChallenge(null);
+
     let cardsButton = new CustomButton(app, setCardsChallenge, textureButton, textureButtonDown, textureButtonOver);
-    cardsButton.mount();
+    cardsButton.mount(100, 100, "Cards");
+
+    let particlesButton = new CustomButton(app, setparticlesChallenge, textureButton, textureButtonDown, textureButtonOver);
+    particlesButton.mount(300, 100, "Particles");
 }
 
 function setChallenge(newChallange){

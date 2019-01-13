@@ -8,22 +8,24 @@ class CustomButton {
         this.buttonDownFunction = buttonDownFunction;
     }
 
-    mount(){
-        
-        this.textureButton      = PIXI.utils.TextureCache[this.textureButton];
-        this.textureButtonDown  = PIXI.utils.TextureCache[this.textureButtonDown];
-        this.textureButtonOver  = PIXI.utils.TextureCache[this.textureButtonOver];
+    mount(x, y, text){
+
+        let textureButton = PIXI.utils.TextureCache[this.textureButton];
 
         let button = new PIXI.Sprite(
-            this.textureButton
+            textureButton
         );
+
         this.button = button;
+
+        button.x = x;
+        button.y = y;
+
+        button.text = text;
 
         button.buttonMode = true;
 
         button.anchor.set(0.5);
-        button.x = 200;
-        button.y = 200;
 
         button.interactive = true;
         button.buttonMode = true;
@@ -37,9 +39,9 @@ class CustomButton {
 
         this.refApp.stage.addChild(button);
 
-        button.textureButton       = this.textureButton;
-        button.textureButtonDown   = this.textureButtonDown;
-        button.textureButtonOver   = this.textureButtonOver;
+        button.textureButton       = textureButton;
+        button.textureButtonDown   = PIXI.utils.TextureCache[this.textureButtonDown];
+        button.textureButtonOver   = PIXI.utils.TextureCache[this.textureButtonOver];
         button.buttonDownFunction  = this.buttonDownFunction;
 
         function onButtonDown() {

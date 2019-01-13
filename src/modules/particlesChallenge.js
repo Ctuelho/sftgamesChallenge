@@ -41,6 +41,10 @@ class ParticlesChallenge {
     }
 
     update(delta){
+
+        //clear from dead particles
+        this.particles = this.particles.filter(item => item.lifeSpam > 0);
+
         let makeParticle = this.repeat || this.totalDuration <= this.effectDuration;
         if(makeParticle){
             this.currentTime += delta;
@@ -173,14 +177,13 @@ class ParticlesChallenge {
 
     removeParticle(particle){
         this.refApp.stage.removeChild(particle);
-        var index = this.particles.indexOf(particle);
-        if (index > -1) {
-            this.particles.splice(index, 1);
-        }
     }
 
     unmount(){
-        
+        this.particles.forEach(particle => {
+            this.removeParticle(particle);
+        });
+        this.particles = null;
     }
 }
 

@@ -97,7 +97,14 @@ class CardsChallenge {
         });
     }
 
+    removeCard(card){
+        this.refApp.stage.removeChild(card);
+    }
+
     unmount(){
+        this.cards.forEach(card => {
+            this.removeCard(card);
+        });
     }
 }
 
