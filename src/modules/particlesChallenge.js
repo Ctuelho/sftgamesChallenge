@@ -3,15 +3,15 @@ class ParticlesChallenge {
         this.refApp = refApp;
         this.textureName = textureName;
         this.maxNumberOfParticles = 10;
-        this.emissionRatePerSecond = 10;
+        this.emissionRatePerSecond = 15;
         this.emissionRateInFrames = 60/this.emissionRatePerSecond;
         this.effectDuration = 300;
-        this.particleLifeSpam = 60;
+        this.particleLifeSpam = 40;
         this.particleSpeedIsRandom = true;
         this.particleSpeed = 1;
-        this.particleMinSpeed = 1.6;
-        this.particleMaxSpeed = 3.0;
-        this.particlesSize = 2;
+        this.particleMinSpeed = 6.0;
+        this.particleMaxSpeed = 7.0;
+        this.particlesSize = 1;
         this.particleScaleIsRandom = true;
         this.particleMinScale = 0.9;
         this.particleMaxScale = 1.1;
@@ -25,13 +25,14 @@ class ParticlesChallenge {
         this.particleMinRot = -1;
         this.particleMaxRot = 1;
         this.particleRotateOverTime = true;
-        this.particleRotationMinSpeed = -0.01;
-        this.particleRotationMaxSpeed = 0.01;
+        this.particleRotationMinSpeed = -0.05;
+        this.particleRotationMaxSpeed = 0.05;
         this.particleRotationSpeed = 0.01;
         this.particleRotationSpeedIsRandom = true;
         this.effectX = refApp.renderer.width/2; //center of app
         this.effectY = refApp.renderer.height/2; //center of app
-        this.effectWidth = 32;//refApp.renderer.width * 0.03; //20% of app width
+        this.particleRandomBasePosition = true;
+        this.effectWidth = 16;//refApp.renderer.width * 0.03; //20% of app width
         this.repeat = true;
         this.currentTime = 0;
         this.totalDuration = 0;
@@ -75,10 +76,6 @@ class ParticlesChallenge {
             {
                 //the particle stills alive
 
-                //change size
-                particle.scale.x = this.particlesSize * particle.orignalScaleX * (particle.lifeSpam/this.particleLifeSpam);
-                particle.scale.y = this.particlesSize * particle.orignalScaleY * (particle.lifeSpam/this.particleLifeSpam);
-
                 //change alpha
                 let targetAlpha = 0;
                 if(this.particleLifeSpam - particle.lifeSpam <= this.particleAlphaStates[1]){
@@ -94,12 +91,19 @@ class ParticlesChallenge {
                     );
                     //console.log("particle lifespam is old", targetAlpha);
                 }
+
+                //particle.tint = targetAlpha * 0xFFFFFF;
                 particle.alpha = targetAlpha;
-                
+                particle.zIndex = targetAlpha;
+
+                //change size
+                particle.scale.x = 2 - this.particlesSize * particle.orignalScaleX * (particle.lifeSpam/this.particleLifeSpam);
+                particle.scale.y = 2 - this.particlesSize * particle.orignalScaleY * (particle.lifeSpam/this.particleLifeSpam);
+
                 //move the particle
                 particle.position.set(
                     particle.x + particle.movementX * particle.speed,
-                    particle.y - particle.movementY * particle.speed
+                    particle.y + particle.movementY * particle.speed
                 );
 
                 if(this.particleRotateOverTime){
@@ -107,6 +111,8 @@ class ParticlesChallenge {
                 }
             }
         });
+
+        this.refApp.sortZorder();
     }   
 
     createParticle(){
@@ -123,6 +129,36 @@ class ParticlesChallenge {
 
         //pivot
         particle.pivot.set(32, 44);
+
+        //poisition
+        let x = this.effectX;
+
+        if(this.particleRandomBasePosition){
+            x = this.effectX + Math.random() * this.effectWidth/2 - Math.random() * this.effectWidth/2;
+        }
+        particle.position.set(
+            x,
+            this.effectY
+        );
+
+        //set partciles direction
+        let mouseData = this.refApp.renderer.plugins.interaction.mouse.global;
+        //let angleRadians = - Math.atan2(mouseData.y - particle.y, mouseData.x - particle.x);
+
+        let direction = [mouseData.x - x, mouseData.y - this.effectY];
+        let len = Math.sqrt(direction[0] * direction[0] + direction[1] * direction[1]);
+        let normal = [direction[0],direction[1]];
+        if(len != 0){
+            normal[0] /= len;
+            normal[1] /= len;    
+        }
+        particle.movementX = normal[0];
+        particle.movementY = normal[1];
+
+        // console.log("len", len);
+        // console.log("direction",direction);
+        // console.log("mouseData",mouseData);
+        // console.log("normal",normal);
 
         //rotation
         if(this.particleRotationIsRandom){
@@ -150,27 +186,12 @@ class ParticlesChallenge {
         //timers
         particle.lifeSpam = this.particleLifeSpam;
 
-        //poisition
-        if(this.particleRandomBasePosition){
-            particle.position.set(
-                this.effectX + Math.random() * this.effectWidth/2 - Math.random() * this.effectWidth/2,
-                this.effectY
-            );
-        } else {
-            particle.position.set(
-                this.effectX,
-                this.effectY
-            );
-        }
-
-        //speed direction of movement
+        //speed of movement
         if(this.particleSpeedIsRandom){
             particle.speed = Math.random() * (this.particleMaxSpeed - this.particleMinSpeed) + this.particleMinSpeed;
         } else {
             particle.speed = this.particleSpeed;
         }
-        particle.movementX = 0;
-        particle.movementY = 1;
 
         return particle;
 
