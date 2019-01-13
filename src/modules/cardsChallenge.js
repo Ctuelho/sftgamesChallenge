@@ -25,6 +25,8 @@ class CardsChallenge {
                 PIXI.loader.resources[this.textureName].texture
             );
 
+            cardSprite.pivot.set(cardSprite.width/2, cardSprite.height/2);
+
             cardSprite.position.set(
                 this.stackStartX + this.cards.length * this.stackPaddingX,
                 this.stackStartY - this.cards.length * this.stackPaddingY
@@ -91,7 +93,16 @@ class CardsChallenge {
                     var tX = card.x + card.amountX;
                     var tY = card.y + card.amountY;
                     card.position.set(tX, tY);
-                    card.zIndex = this.numberOfCards - this.currentCardIndex;                    
+                    card.zIndex = this.numberOfCards - this.currentCardIndex;
+                    //card punch scale
+                    if(card.currentFrame <= 20){
+                        let scale = (card.currentFrame/20) + 1;
+                        card.scale.set(scale, scale);
+                    } else if(card.currentFrame >= 80) {
+                        let frames = 120 - card.currentFrame;
+                        let scale = (frames/40) + 1;
+                        card.scale.set(scale, scale);
+                    }            
                 }
             }
         });
