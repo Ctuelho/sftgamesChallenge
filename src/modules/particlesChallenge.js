@@ -15,8 +15,9 @@ class ParticlesChallenge {
         this.particleScaleIsRandom = true;
         this.particleMinScale = 0.9;
         this.particleMaxScale = 1.1;
-        //0 - start alpha at frame 0
-        //1 - at frame 10, 60% alpha
+        //0 - start alpha at first frame
+        //1 - at frame 10
+        //2 - alpha at frame 10
         //3 - at last frame, 0% alpha
         this.particleAlphaStates = [0, 10, 0.7, 0];
         this.particleRotationIsRandom = true;

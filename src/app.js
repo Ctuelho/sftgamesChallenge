@@ -1,3 +1,7 @@
+
+
+
+
 import { CustomButton } from './modules/customButton';
 import { CardsChallenge } from './modules/cardsChallenge';
 import { ParticlesChallenge } from './modules/particlesChallenge';
@@ -12,10 +16,21 @@ import textureButton from './images/textureButton.png';
 import textureButtonDown from './images/textureButtonDown.png';
 import textureButtonOver from './images/textureButtonOver.png';
 
+//let magicCard = 'https://s3.eu-central-1.amazonaws.com/softgames-challenge/magicCard.png';
+//let fireParticle = 'https://s3.eu-central-1.amazonaws.com/softgames-challenge/fireParticle.png';
+//let textureButton = 'https://s3.eu-central-1.amazonaws.com/softgames-challenge/textureButton.png';
+//let textureButtonDown = 'https://s3.eu-central-1.amazonaws.com/softgames-challenge/textureButtonDown.png';
+//let textureButtonOver = 'https://s3.eu-central-1.amazonaws.com/softgames-challenge/textureButtonOver.png';
+
 //Create a Pixi Application
 const app = new PIXI.Application();
 
 let currentChallenge = null;
+
+let cardsButton = null;
+let textButton = null;
+let particlesButton = null;
+let backButton = null;
 
 app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
@@ -53,15 +68,52 @@ function setparticlesChallenge(){
     setChallenge(particlesChallenge);
 }
 
+function showBackButton(){
+
+    if(backButton == null) {
+        backButton = new CustomButton(app, showMainMenu, textureButton, textureButtonDown, textureButtonOver);
+        backButton.mount(500, 600, "Back");
+    } else {
+        app.stage.addChild(backButton.button);
+    }
+
+    hideMainMenu();
+}
+
 function showMainMenu(){
     
     setChallenge(null);
 
-    let cardsButton = new CustomButton(app, setCardsChallenge, textureButton, textureButtonDown, textureButtonOver);
-    cardsButton.mount(100, 100, "Cards");
+    if(cardsButton == null) {
+        cardsButton = new CustomButton(app, setCardsChallenge, textureButton, textureButtonDown, textureButtonOver);
+        cardsButton.mount(100, 100, "Cards");
+    } else {
+        app.stage.addChild(cardsButton.button);
+    }
+    
+    if(particlesButton == null){
+        particlesButton = new CustomButton(app, setparticlesChallenge, textureButton, textureButtonDown, textureButtonOver);
+        particlesButton.mount(500, 100, "Particles");
+    } else {
+        app.stage.addChild(particlesButton.button);
+    }
 
-    let particlesButton = new CustomButton(app, setparticlesChallenge, textureButton, textureButtonDown, textureButtonOver);
-    particlesButton.mount(500, 100, "Particles");
+    hideBackButton(0);
+}
+
+function hideMainMenu(){
+    if(cardsButton != null){
+        app.stage.removeChild(cardsButton.button);
+    }
+    if(particlesButton != null){
+        app.stage.removeChild(particlesButton.button);
+    }
+}
+
+function hideBackButton(){
+    if(backButton != null){
+        app.stage.removeChild(backButton.button);
+    } 
 }
 
 function setChallenge(newChallange){
@@ -71,6 +123,7 @@ function setChallenge(newChallange){
     }
     if(newChallange != null){
         newChallange.mount();
+        showBackButton();
     }
     currentChallenge = newChallange;
 }

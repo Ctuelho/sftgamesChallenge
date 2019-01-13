@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "challenge from Softgames using pixi.js",
   "main": "index.html",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
@@ -15,8 +14,10 @@
     "pixi.js": "^4.8.5",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.14",
     "webpack-merge": "^4.2.1"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.1.14"
   },
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",

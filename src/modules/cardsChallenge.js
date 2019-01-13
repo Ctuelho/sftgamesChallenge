@@ -4,10 +4,10 @@ class CardsChallenge {
         this.textureName = textureName;
         this.numberOfCards = 144;
         this.cards = [];
-        this.stackStartX = 200;
-        this.stackStartY = refApp.renderer.height - 200;
+        this.stackStartX = 100;
+        this.stackStartY = refApp.renderer.height - 400;
         this.stackEndX = 500;
-        this.stackEndY = refApp.renderer.height - 200;
+        this.stackEndY = refApp.renderer.height - 400;
         this.stackPaddingX = 0;
         this.stackPaddingY = 0.5;
         this.intervalToMoveCards = 60;
